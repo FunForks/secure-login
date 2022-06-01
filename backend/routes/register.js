@@ -17,6 +17,7 @@ const {
   findUser,
   addUser
 } = require('../controllers/userController')
+const { sendEmail } = require('../utilities/sendEmail')
 
 
 
@@ -53,10 +54,13 @@ module.exports = async (request, response, next) => {
       
       delete user.hash // security risk
       delete user.__v  // version key, for internal use only
+      delete user.confirmed // unnecessary for JWT
       
+      const email_url = await sendEmail(user)
+
       response
         .status(200)
-        .json( user )
+        .json({ email_url, user })
     }
   }
 }

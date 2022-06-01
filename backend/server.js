@@ -31,11 +31,6 @@ const { urlencoded } = express // used to get username from body
 
 require('./data/db.js')
 const userRouter = require('./routes/user')
-const {
-  createToken,
-  authenticateToken,
-  verifyToken
-} = require('./routes/token')
 const fallback = require('./routes/404')
 const { setCors } = require("./middleware/security");
 
@@ -79,8 +74,6 @@ app.get("/", (request, response, next) => {
 })
 
 
-app.get("/token", createToken)
-app.get("/access", authenticateToken, verifyToken)
 app.use("/user", userRouter)
 
 
