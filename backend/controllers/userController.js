@@ -16,9 +16,9 @@ exports.addUser = async (userData) => {
 }
 
 const findUser = async (params) => {
-  const { id, email } = params
-  const users = id
-              ? await User.find({ id })
+  const { _id, email } = params
+  const users = _id
+              ? await User.find({ _id })
               : await User.find({ email })
 
   return users[0] // may be undefined or object
