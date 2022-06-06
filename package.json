@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "backend": "lsof -ti tcp:3000 | xargs kill && cd backend && npm start",
-    "frontend": "lsof -ti tcp:$PORT | xargs kill && cd frontend && npm start",
+    "frontend": "lsof -ti tcp:3001 | xargs kill && cd frontend && npm start",
     "start": "npm run backend & PORT=3001 npm run frontend",
     "NOTE": "COMMENT OUT THE CONTENTS OF clearConsole() IN frontend/node_modules/react-dev-utils/clearConsole.js TO SEE OUTPUT FROM npm run backend"
   },

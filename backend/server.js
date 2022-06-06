@@ -27,7 +27,7 @@
 require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const express = require('express')
-const { urlencoded } = express // used to get username from body
+const { urlencoded, json } = express
 
 require('./data/db.js')
 const userRouter = require('./routes/user')
@@ -61,7 +61,8 @@ Request for ${protocol}://${host}${url}`);
 
 // MIDDLEWARE // MIDDLEWARE // MIDDLEWARE // MIDDLEWARE //
 
-app.use(urlencoded({ extended: false }))
+app.use(json())                          // to get data from JSON
+// app.use(urlencoded({ extended: false })) // to get data from a form
 app.use(cookieParser())
 app.use(showCookies)
 app.use(setCors)
