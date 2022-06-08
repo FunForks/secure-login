@@ -11,9 +11,9 @@ import Home         from './components/Home'
 import Welcome      from './components/Welcome'
 import Login        from './components/Login'
 import RequireLogin from './components/RequireLogin'
-import CheckLogin   from './components/CheckLogin'
 import Public       from './components/Public'
 import Private      from './components/Private'
+import ShowId       from './components/ShowId'
 
 
 // Provide global access to loggedInUser, logIn,
@@ -40,7 +40,7 @@ function App() {
               path="/private1"
               element={
                 <RequireLogin redirectTo="/login">
-                  <Private 
+                  <Private
                     text="Private Page #1"
                   />
                 </RequireLogin >
@@ -51,16 +51,22 @@ function App() {
               path="/private2"
               element={
                 <RequireLogin redirectTo="/login">
-                  <Private 
+                  <Private
                     text="Private Page #2"
                   />
                 </RequireLogin >
               }
             />
-          </Route>
 
-          {/* Path to query backend if user is logged in */}
-          <Route path="/check" element={<CheckLogin />} />
+            <Route
+              path="/ShowId"
+              element={
+                <RequireLogin redirectTo="/login">
+                  <ShowId/>
+                </RequireLogin >
+              }
+            />
+          </Route>
 
           {/* Go to Welcome page if the path is unknown */}
           <Route path="*" element={<Navigate to="/" />} />

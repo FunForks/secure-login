@@ -1,26 +1,26 @@
-
+import Storage from '../api/storage'
 
 // <<< HARDCODED
 const backendURL = "http://localhost:3000"
 const registerPath = "/user/register"
 const loginPath = "/user/login"
-const checkPath = "/user/check"
+const getIdPath = "/user/getid"
 // HARDCODED >>>
 
 
 
 const treatResponseFromRegister = async (response) => {
   if (response.status === 200) {
-    // response.json() = { 
+    // response.json() = {
     //   "email_url":"https://ethereal.email/message/veryL0ng5string",
-    //   "user": { 
+    //   "user": {
     //     "email": "user@example.com",
     //     "_id":   "629daec10f883a5f279f1d5c"
     //   }
     // }
     const result = await response.json()
     return result.email_url
-    
+
   } else {
     // response.text() = "The email address user@example.com is already in use."
     return response.text()
@@ -30,20 +30,35 @@ const treatResponseFromRegister = async (response) => {
 
 const treatResponseFromLogin = async (response) => {
   const status = response.status // 200 | 406
-  const text = await response.text()
+  let token = ""
+  let text = await response.text()
   // "Invalid email address or password."
-  // OR `User ${email} logged in.`
+  // OR
+  // { token: "veryl0ng5tring",
+  //   text: `User ${email} logged in.`
+  // }
+
+  try {
+    const json = JSON.parse(text)
+    ;({ text, token } = json)
+  } catch(error) {
+    // leave text and token as they are
+  }
+
+  // Save to local storage
+  Storage.set({ token })
 
   return {
     status,
-    text
+    text,
+    token
   }
 }
 
 
 export const register = async (formData) => {
   // console.log("formData:", formData);
-  
+
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -72,7 +87,7 @@ export const register = async (formData) => {
 
 export const logIn = async (formData) => {
   // console.log("formData:", formData);
-  
+
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -95,37 +110,40 @@ export const logIn = async (formData) => {
   //   text:   < `User ${email} logged in.`
   //           | "Invalid email address or password."
   //           >
+  //   token: < "" | "veryL0ng5tring" >
   // }
 
   return result
 }
 
 
-export const checkLogin = async () => {
+export const getId = async (data) => {
+  // console.log("data:", data);
+  let _id = ""
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const raw = JSON.stringify(data);
+
   const requestOptions = {
-    method: 'GET',
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
   };
 
-  const url = `${backendURL}${checkPath}`
+  const url = `${backendURL}${getIdPath}`
 
   const response = await fetch(url, requestOptions)
 
-  // response may contain an HttpOnly cookie which will be sent
-  // back to the backend each time a request is made to it.
-  // However, JavaScript has no access to HttpOnly cookies,
-  // so we'll expect a JSON object with the format
-  //
-  //  { loggedIn: <false | email_address > }
-
-  let loggedIn = ""
-
   try {
-    const loggedInStatus = await response.json();
-    ({ loggedIn } = loggedInStatus)
+    const result = await response.json();
+    _id = result._id
 
   } catch(error) {
     console.log("error:", error);
   }
 
-  return loggedIn // false | <email_address>
+  return _id
 }

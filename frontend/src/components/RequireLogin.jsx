@@ -8,9 +8,9 @@
  
  
  const RequireLogin = ({ children, redirectTo }) => {
-   const { loggedInUser } = useContext(UserContext);
+   const { token } = useContext(UserContext);
       
-   return loggedInUser
+   return token
         ? children
         : <Navigate to={redirectTo} />;
  }

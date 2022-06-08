@@ -2,13 +2,13 @@ const router = require('express').Router()
 const register = require('./register')
 const confirm = require('./confirm')
 const login = require('./login')
-const check = require('./check')
+const getid = require('./getid')
 
 
 router.post('/register', register)
 router.get('/confirm/:token', confirm)
 router.post('/login', login)
-router.get('/check', check)
+router.post('/getid', getid)
 
 module.exports = router
 

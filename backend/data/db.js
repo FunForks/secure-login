@@ -16,5 +16,8 @@ mongoose.connect(URL, options);
 
 mongoose.connection.on("error", console.error);
 mongoose.connection.on("open", function() {
-  console.log(`Connection to ${DATABASE} database established`);
+  console.log(
+    `Connection to ${DATABASE} database established
+    `
+  );
 });

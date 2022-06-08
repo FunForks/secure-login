@@ -1,22 +1,51 @@
 import { useContext } from 'react'
+import { NavLink } from 'react-router-dom'
 import { UserContext } from  '../contexts/UserContext'
 
+import LogOut from './LogOut'
 
-const Menu = () => {
-  const { loggedInUser } = useContext(UserContext)
+const Menu = ({noLogIn}) => {
+  const { token } = useContext(UserContext)
 
-  const publicPages = ["public1", "public2"]
-  const privatePages = ["private1", "private2"]
+  const publicPages = ["", "public1", "public2"]
+  const privatePages = ["private1", "private2", "showid"]
 
-  const pages = loggedInUser
+
+  // Include private pages if token indicates logged-in state
+  const pages = token
               ? [...publicPages, ...privatePages]
-              : ["login", ...publicPages]
+              : publicPages
 
+
+  // Generate menu items including "" -> "/" (for Home)
   const items = pages.map( page => (
-    <li><a href={`/${page}`}>{page}</a></li>
+    <li
+      key={page}
+    >
+      <NavLink to={`/${page}`}>
+        {page || "Home"}
+      </NavLink>
+    </li>
   ))
 
-  return <ul id="menu">{items}</ul>
+
+  // Include Log In or Log Out button, depending on the current state
+  const button = token
+    ? <LogOut />
+    : <NavLink
+        to="/login"
+        className="in"
+      >
+        Log In
+      </NavLink>
+
+
+  return (
+    <aside>
+      <ul id="menu">{items}</ul>
+      {noLogIn ? "" : button}
+    </aside>
+  )
 }
 
 

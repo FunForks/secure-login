@@ -3,11 +3,9 @@ import Menu from './Menu'
 export default function Welcome() {
   return (
     <main>
-      <aside>
-        <Menu />
-      </aside>
+      <Menu />
       <section>
-        Welcome!
+        Welcome to the Home page!
       </section>
     </main>
   )

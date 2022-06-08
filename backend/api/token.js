@@ -54,15 +54,15 @@ function decodeToken(token) {
     const { message } = error
     switch (message) {
       case "jwt expired":
-        result.status(403) // Forbidden
+        result.status = 403 // Forbidden
       break
       // FALL THROUGH BELOW
       case "invalid signature":
       case "jwt malformed":
-        result.status(401) // Unauthorized
+        result.status = 401 // Unauthorized
       break
       default:
-        result.status(406) // Not acceptable
+        result.status = 406 // Not acceptable
     }
   }
 

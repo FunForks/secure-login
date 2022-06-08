@@ -47,8 +47,7 @@ module.exports = async (request, response) => {
     }
   }
 
-  response.redirect(
-    result.status,
-    "http://localhost:3001/check"
-  )
+  response
+    .status(result.status)
+    .redirect("http://localhost:3001/login")
 }

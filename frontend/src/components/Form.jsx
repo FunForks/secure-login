@@ -1,17 +1,35 @@
 import { register, logIn } from '../api/user.js'
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { UserContext } from "../contexts/UserContext"
+
+// For demonstration only. If the default form "action" url
+// is triggered, then the current page will be replaced with
+// the response from the call. If, instead, preventDefault()
+// is used in association with a `fetch` action, then current
+// page will remain in the browser and the response from the
+// `fetch` action can be used to alter the page rather than
+// replace it.
 const FORM_ACTION = "http://localhost:3000/user/register"
+
 
 export default function Form() {
   const [ showPassword, setShowPassword ] = useState(false)
   const [ email, setEmail ] = useState("user@example.com")
   const [ password, setPassword ] = useState("mySecretPassword")
-  const [ registerMessage, setRegisterMessage ] = useState("")
+  const [ registerMessage, setRegisterMessage ] = useState()
+
+  const { setToken } = useContext(UserContext)
   const navigate = useNavigate()
-  
-  
+
+  const setMessage = (source, text) => {
+    setRegisterMessage({
+      source,
+      text
+    })
+  }
+
   const updateEmail = (event) => {
     setEmail(event.target.value)
   }
@@ -36,7 +54,7 @@ export default function Form() {
     }
 
     const message = await register(formData)
-    setRegisterMessage(message)
+    setMessage("Register", message)
   }
 
 
@@ -49,8 +67,24 @@ export default function Form() {
     }
 
     const result = await logIn(formData)
-    console.log("result", result);
-    navigate('/check', { replace: true })
+
+    // console.log("result", result);
+    // { status: <200 | 406>
+    //   text:   < `User ${email} logged in.`
+    //           | "Invalid email address or password."
+    //           >
+    //   token: < "" | "veryL0ng5tring" >
+    // }
+
+    const { token, text } = result
+  if (token) {
+      setToken(result.token)
+      // navigate('/', { replace: true })
+      navigate(-1)
+
+    } else {
+      setMessage("Login", text)
+    }
   }
 
 
@@ -58,13 +92,19 @@ export default function Form() {
     let message = ""
 
     if (registerMessage) {
-      if (registerMessage.substring(0,4) === "http") {
-        message = <span>Check your <a href={registerMessage} target="_blank">email</a></span>
-      } else {
-        message = registerMessage
+      let { source, text } = registerMessage
+      if (text.substring(0,4) === "http") {
+        text = <span>Check your <a
+            href={text}
+            target="_blank"
+            rel="noreferrer"
+          >
+            email
+          </a>
+        </span>
       }
-    
-      message = <><strong>Register message: </strong>{message}</>
+
+      message = <><strong>{source} message: </strong>{text}</>
     }
 
     return message
@@ -106,7 +146,9 @@ export default function Form() {
         </button>
       </label>
 
-      <button
+      <button   
+        // Comment out the following line to check what happens if
+        // the default form "action" is triggered
         onClick={prepareToRegister}
       >
         Register

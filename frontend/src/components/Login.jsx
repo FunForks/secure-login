@@ -2,25 +2,30 @@ import { useContext } from 'react'
 import { UserContext } from  '../contexts/UserContext'
 
 import Form from './Form'
+import LogOut from './LogOut'
+import Menu from './Menu'
+
 
 export default function Login() {
-  const { loggedInUser, logIn } = useContext(UserContext)
+  const { token } = useContext(UserContext)
 
-  const logOut = () => {
-    logIn()
-  }
 
-  const button = (
-    <button
-      onClick={logOut}
-    >
-      Log out
-    </button>
+  const AlreadyLoggedIn = () => (
+    <>
+      <p>You are already logged in</p>
+      <LogOut />
+    </>
   )
 
-  const Display = loggedInUser
-                ? button
+
+  const display = token
+                ? <AlreadyLoggedIn />
                 : <Form />
-  
-  return Display
+
+  return <>
+    <Menu
+      noLogIn={true}
+    />
+    {display}
+  </>
 }

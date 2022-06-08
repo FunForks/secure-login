@@ -68,41 +68,31 @@
  *      }
  *
  * ########################################################### *
- * 
+ *
  * This UserContext allows other components to read and set the
- * loggedInUser string, and to set a default urlUser, whose 
+ * loggedInUser string, and to set a default urlUser, whose
  * value may be read in from the "/:username" path (see App.jsx)
  */
 
 
  import { createContext, useState } from 'react'
- 
- 
+
+
  export const UserContext = createContext()
- 
- 
- export const UserProvider = ({children}) => {   
-   // Define the currently logged in user
-   const [ loggedInUser, setLoggedInUser ] = useState("")
- 
-   // logIn works as log out if username is not a string
-   const logIn = (username) => {
-     if (typeof username !== "string") {
-       username = ""
-     }
- 
-     setLoggedInUser(username)
-   }
- 
+
+
+ export const UserProvider = ({children}) => {
+   const [ token, setToken ] = useState("")
+
+
    return (
      <UserContext.Provider
        value ={{
-         loggedInUser,
-         logIn
+         token,
+         setToken
        }}
      >
        {children}
      </UserContext.Provider>
    )
  }
- 
