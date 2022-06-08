@@ -1,5 +1,6 @@
-import { register } from '../api/user.js'
+import { register, logIn } from '../api/user.js'
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const FORM_ACTION = "http://localhost:3000/user/register"
 
@@ -8,6 +9,7 @@ export default function Form() {
   const [ email, setEmail ] = useState("user@example.com")
   const [ password, setPassword ] = useState("mySecretPassword")
   const [ registerMessage, setRegisterMessage ] = useState("")
+  const navigate = useNavigate()
   
   
   const updateEmail = (event) => {
@@ -35,6 +37,20 @@ export default function Form() {
 
     const message = await register(formData)
     setRegisterMessage(message)
+  }
+
+
+  const prepareToLogIn = async (event) => {
+    event.preventDefault()
+
+    const formData = {
+      email,
+      password
+    }
+
+    const result = await logIn(formData)
+    console.log("result", result);
+    navigate('/check', { replace: true })
   }
 
 
@@ -94,6 +110,12 @@ export default function Form() {
         onClick={prepareToRegister}
       >
         Register
+      </button>
+      <span>or</span>
+      <button
+        onClick={prepareToLogIn}
+      >
+        Log in
       </button>
     </form>
 

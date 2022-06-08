@@ -17,7 +17,7 @@ const {
   findUser,
   addUser
 } = require('../controllers/userController')
-const { sendEmail } = require('../utilities/sendEmail')
+const { sendEmail } = require('../api/sendEmail')
 
 
 
@@ -28,7 +28,7 @@ module.exports = async (request, response, next) => {
   if (existingUser) {
     response
       .status(406)
-      .send(`The email address ${email} is already in use.`)
+      .send(`The email address ${email} is already in use. If this is you, please login.`)
 
   } else {
     const hash = await bcrypt.hash(password, SALT_ROUNDS)

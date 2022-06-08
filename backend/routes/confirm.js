@@ -1,4 +1,4 @@
-const { decodeToken} = require('../utilities/token')
+const { createCookie, decodeToken } = require('../api/token')
 const {
   findUser,
   updateUser
@@ -14,7 +14,7 @@ module.exports = async (request, response) => {
     console.log("result.error:", result.error.message);
 
   } else {
-    const { _id } = result
+    const { _id, email } = result
 
     const user = await findUser({ _id })
 
@@ -36,19 +36,19 @@ module.exports = async (request, response) => {
       } else {
         result = document
         result.status = 200
+
+        // Prepare an HttpOnly cookie that will be sent with every
+        // future request to the backend
+        await createCookie(
+          { email, _id },
+          response
+        )
       }
     }
   }
 
-  // We should take the user to the logged-in page of the site
-  // but for now, let's just return a redacted user document,
-  // or the error, as JSON.
-
-  // .hash and .__v won't exist if there was an error
-  delete result.hash
-  delete result.__v
-
-  response
-    .status(result.status)
-    .json( result )
+  response.redirect(
+    result.status,
+    "http://localhost:3001/check"
+  )
 }

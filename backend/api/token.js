@@ -17,6 +17,21 @@ const createToken = (payload) => {
 }
 
 
+const createCookie = async (payload, response) => {
+  const token = await createToken(payload)
+
+  response.cookie(
+    "token",
+    token,
+    {
+      // sameSite: "none",
+      // secure: true,
+      httpOnly: true,
+    }
+  )
+}
+
+
 function decodeToken(token) {
   let result = {}
 
@@ -56,6 +71,7 @@ function decodeToken(token) {
 
 
 module.exports = {
+  createCookie,
   createToken,
   decodeToken
 }

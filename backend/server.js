@@ -35,6 +35,7 @@ const fallback = require('./routes/404')
 const { setCors } = require("./middleware/security");
 
 const app = express()
+const DOMAIN = process.env.DOMAIN || "http://localhost"
 const PORT = process.env.PORT || 3000
 
 
@@ -71,7 +72,7 @@ app.use(setCors)
 // ENDPOINTS // ENDPOINTS // ENDPOINTS // ENDPOINTS // ENDPOINTS //
 
 app.get("/", (request, response, next) => {
-  response.status(200).send(`Connected to backend at http://localhost:${PORT}`)
+  response.status(200).send(`Connected to backend at ${DOMAIN}:${PORT}`)
 })
 
 

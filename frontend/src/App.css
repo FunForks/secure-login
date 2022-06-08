@@ -21,6 +21,10 @@ form > button {
   width: 7em;
 }
 
+button ~ span {
+  text-align: center;
+}
+
 input {
   margin-left: var(--margin);
 }

@@ -1,10 +1,73 @@
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
+
 import "./App.css";
-import Form from './components/Form'
+import Home         from './components/Home'
+import Welcome      from './components/Welcome'
+import Login        from './components/Login'
+import RequireLogin from './components/RequireLogin'
+import CheckLogin   from './components/CheckLogin'
+import Public       from './components/Public'
+import Private      from './components/Private'
+
+
+// Provide global access to loggedInUser, logIn,
+// urlUser and setUrlUser
+import { UserProvider } from './contexts/UserContext'
 
 
 function App() {
   return (
-    <Form />
+    <Router>
+      <UserProvider>
+        <Routes>
+          <Route path="/" element={<Home />} >
+            {/* All paths are wrapped by Home */}
+            <Route index element={<Welcome />} />
+
+            <Route path="/login" element={<Login />} />
+
+            <Route path="/public1" element={<Public text="Public #1"/>}/>
+
+            <Route path="/public2" element={<Public text="Public #2"/>}/>
+
+            <Route
+              path="/private1"
+              element={
+                <RequireLogin redirectTo="/login">
+                  <Private 
+                    text="Private Page #1"
+                  />
+                </RequireLogin >
+              }
+            />
+
+            <Route
+              path="/private2"
+              element={
+                <RequireLogin redirectTo="/login">
+                  <Private 
+                    text="Private Page #2"
+                  />
+                </RequireLogin >
+              }
+            />
+          </Route>
+
+          {/* Path to query backend if user is logged in */}
+          <Route path="/check" element={<CheckLogin />} />
+
+          {/* Go to Welcome page if the path is unknown */}
+          <Route path="*" element={<Navigate to="/" />} />
+
+        </Routes>
+      </UserProvider>
+    </Router>
   );
 }
 
