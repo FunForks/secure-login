@@ -37,35 +37,30 @@ function App() {
             <Route path="/public2" element={<Public text="Public #2"/>}/>
 
             <Route
-              path="/private1"
+              path="/private*"
               element={
-                <RequireLogin redirectTo="/login">
-                  <Private
-                    text="Private Page #1"
-                  />
-                </RequireLogin >
-              }
-            />
+                <RequireLogin
+                  redirectTo="/login"
+                >
+                  <Routes>
+                    <Route
+                      path="/1"
+                      element={<Private text="Private Page #1" />}
+                    />
 
-            <Route
-              path="/private2"
-              element={
-                <RequireLogin redirectTo="/login">
-                  <Private
-                    text="Private Page #2"
-                  />
-                </RequireLogin >
-              }
-            />
+                    <Route
+                      path="/2"
+                      element={<Private text="Private Page #2" />}
+                    />
 
-            <Route
-              path="/ShowId"
-              element={
-                <RequireLogin redirectTo="/login">
-                  <ShowId/>
+                    <Route
+                      path="/ShowId"
+                      element={<ShowId/>}
+                    />
+                  </Routes>
                 </RequireLogin >
               }
-            />
+             />
           </Route>
 
           {/* Go to Welcome page if the path is unknown */}

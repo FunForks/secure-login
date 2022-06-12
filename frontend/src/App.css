@@ -11,7 +11,7 @@ aside {
 }
 
 aside > a,
-a.out {
+button.out {
   padding: 0.4em 1em;
   border: 1px #090 outset;
   border-radius: 0.4em;
@@ -20,7 +20,7 @@ a.out {
   text-decoration: none;
 }
 
-a.out {
+button.out {
   background-color: #d90;
   border-color: #d90
 }

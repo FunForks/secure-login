@@ -4,12 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "backend": "lsof -ti tcp:3000 | xargs kill && cd backend && npm start",
-    "frontend": "lsof -ti tcp:3001 | xargs kill && cd frontend && npm start",
+    "stop-backend:macos": "lsof -ti tcp:3000 | xargs kill",
+    "stop-backend:linux": "fuser -k 3000/tcp",
+    "stop-backend:windows": "taskkill //F //PID 3000",
+    "stop-backend": "run-script-os",
+    "stop-frontend:macos": "lsof -ti tcp:3001 | xargs kill",
+    "stop-frontend:linux": "fuser -k 3001/tcp",
+    "stop-backend:windows": "taskkill //F //PID 3001",
+    "stop-frontend": "run-script-os",
+
+    "start-backend": "cd backend && npm start",
+    "start-frontend": "cd frontend && npm start",
+    "backend": "npm run stop-backend || true && npm run start-backend",
+    "frontend": "npm run stop-frontend || true && npm run start-frontend",
+
     "start": "npm run backend & PORT=3001 npm run frontend",
+
     "NOTE": "COMMENT OUT THE CONTENTS OF clearConsole() IN frontend/node_modules/react-dev-utils/clearConsole.js TO SEE OUTPUT FROM npm run backend"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "run-script-os": "^1.1.6"
+  }
 }

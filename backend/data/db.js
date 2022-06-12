@@ -3,8 +3,16 @@
 
 const mongoose = require("mongoose");
 
-const DATABASE = "secure-login"
-const URL = `mongodb://localhost:27017/${DATABASE}`
+const MONGOURL = process.env.MONGOURL || "mongodb+srv://"
+const USERNAME = process.env.USERNAME || "dci-mentoring"
+const PASSWORD = process.env.PASSWORD || "DC_mySecretKey_I"
+const DATABASE = process.env.DATABASE || "secure-login"
+const IS_LOCAL = process.env.IS_LOCAL || false
+const URL = IS_LOCAL
+  ? `mongodb://localhost:27017/${DATABASE}`
+  : `${MONGOURL}${USERNAME}:${PASSWORD}@${DATABASE}.bbg1chr.mongodb.net/?retryWrites=true&w=majority`
+
+
 const options = {
   useNewUrlParser: true,
   // useCreateIndex: true,

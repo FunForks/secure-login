@@ -16,11 +16,11 @@ const FORM_ACTION = "http://localhost:3000/user/register"
 
 export default function Form() {
   const [ showPassword, setShowPassword ] = useState(false)
-  const [ email, setEmail ] = useState("user@example.com")
-  const [ password, setPassword ] = useState("mySecretPassword")
+  const [ email, setEmail ] = useState("")
+  const [ password, setPassword ] = useState("")
   const [ registerMessage, setRegisterMessage ] = useState()
 
-  const { setToken } = useContext(UserContext)
+  const { setToken, preLoginURL } = useContext(UserContext)
   const navigate = useNavigate()
 
   const setMessage = (source, text) => {
@@ -79,8 +79,7 @@ export default function Form() {
     const { token, text } = result
   if (token) {
       setToken(result.token)
-      // navigate('/', { replace: true })
-      navigate(-1)
+      navigate(preLoginURL, { replace: true })
 
     } else {
       setMessage("Login", text)

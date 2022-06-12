@@ -14,13 +14,8 @@
 
 
  const Home = () => {
-   const { loggedInUser } = useContext(UserContext)
-   const greeting = loggedInUser
-                  ? `${loggedInUser}: `
-                  : ""
-  
    return <>
-     <h1>{greeting}THIS IS YOUR SITE</h1>
+     <h1>THIS IS YOUR SITE</h1>
      <Outlet />
    </>
  }
