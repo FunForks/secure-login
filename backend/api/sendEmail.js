@@ -45,7 +45,6 @@ exports.sendEmail = async (user) => {
   // Tell Postman where to find the "email"
   const email_url = nodemailer.getTestMessageUrl(info)
 
-  console.log("html:", html);
   console.log(`Ctrl-click to view the email at ${email_url}`)
 
   return email_url

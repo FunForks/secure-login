@@ -44,28 +44,11 @@ app.listen(PORT, () => {
 })
 
 
-// DEV FEEDBACK // DEV FEEDBACK // DEV FEEDBACK // DEV FEEDBACK //
-
-function showCookies(request, response, next) {
-  const url = request.originalUrl;
-  const protocol = request.protocol;
-  const host = request.headers.host;
-
-  console.log(`======
-Request for ${protocol}://${host}${url}`);
-
-  console.log("request.cookies:", request.cookies);
-  console.log("======\n")
-  next()
-}
-
-
 // MIDDLEWARE // MIDDLEWARE // MIDDLEWARE // MIDDLEWARE //
 
 app.use(json())                          // to get data from JSON
 // app.use(urlencoded({ extended: false })) // to get data from a form
 app.use(cookieParser())
-app.use(showCookies)
 app.use(setCors)
 
 
