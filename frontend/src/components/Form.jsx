@@ -20,7 +20,7 @@ export default function Form() {
   const [ password, setPassword ] = useState("mySecretPassword")
   const [ registerMessage, setRegisterMessage ] = useState()
 
-  const { setToken } = useContext(UserContext)
+  const { setToken, preLoginURL } = useContext(UserContext)
   const navigate = useNavigate()
 
   const setMessage = (source, text) => {
@@ -79,8 +79,7 @@ export default function Form() {
     const { token, text } = result
   if (token) {
       setToken(result.token)
-      // navigate('/', { replace: true })
-      navigate(-1)
+      navigate(preLoginURL, { replace: true })
 
     } else {
       setMessage("Login", text)

@@ -3,7 +3,7 @@
  */
 
 
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 const { findUser } = require('../controllers/userController')
 const { createToken } = require('../api/token')

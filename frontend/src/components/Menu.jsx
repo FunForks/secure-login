@@ -5,7 +5,7 @@ import { UserContext } from  '../contexts/UserContext'
 import LogOut from './LogOut'
 
 const Menu = ({noLogIn}) => {
-  const { token } = useContext(UserContext)
+  const { token, setPreLoginURL } = useContext(UserContext)
 
   const publicPages = ["", "public1", "public2"]
   const privatePages = ["private1", "private2", "showid"]
@@ -29,12 +29,18 @@ const Menu = ({noLogIn}) => {
   ))
 
 
+  const setReturnURL = () => {
+    setPreLoginURL(window.location.pathname)
+  }
+
+
   // Include Log In or Log Out button, depending on the current state
   const button = token
     ? <LogOut />
     : <NavLink
         to="/login"
         className="in"
+        onClick={setReturnURL}
       >
         Log In
       </NavLink>

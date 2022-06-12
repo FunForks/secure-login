@@ -75,24 +75,26 @@
  */
 
 
- import { createContext, useState } from 'react'
+import { createContext, useState } from 'react'
 
+export const UserContext = createContext()
 
- export const UserContext = createContext()
+const BASE_URL = "http://localhost:3001/"
 
+export const UserProvider = ({children}) => {
+  const [ preLoginURL, setPreLoginURL ] = useState(BASE_URL)
+  const [ token, setToken ] = useState("")
 
- export const UserProvider = ({children}) => {
-   const [ token, setToken ] = useState("")
-
-
-   return (
-     <UserContext.Provider
-       value ={{
-         token,
-         setToken
-       }}
-     >
-       {children}
-     </UserContext.Provider>
-   )
+  return (
+    <UserContext.Provider
+      value ={{
+        preLoginURL,
+        setPreLoginURL,
+        token,
+        setToken
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  )
  }

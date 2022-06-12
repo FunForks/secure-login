@@ -14,12 +14,11 @@ export default function LogOut() {
   }
 
   return (
-    <a
+    <button
       className="out"
       onClick={logOut}
-      href="#"
     >
       Log Out
-    </a>
+    </button>
   )
 }
